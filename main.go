@@ -46,6 +46,11 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("usuario ", user.Username)
+	if user.Username == "" {
+		fmt.Println("usuario vazio")
+		w.WriteHeader((http.StatusUnauthorized))
+		return
+	}
 	row := db.QueryRow("SELECT * FROM users WHERE username=$1", user.Username)
 	err = row.Scan(&DBuser.Username, &DBuser.Password)
 	if err != nil {
